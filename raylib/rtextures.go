@@ -23,6 +23,15 @@ func (i *Image) cptr() *C.Image {
 }
 
 // ToImage converts a Image to Go image.Image
+func (i *Image) ToImageEx(img image.RGBA) {
+	// img := image.NewRGBA(image.Rect(0, 0, int(i.Width), int(i.Height)))
+	// Get pixel data from image (RGBA 32bit)
+	cimg := i.cptr()
+	ret := C.LoadImageColors(*cimg)
+	img.Pix = (*[1 << 24]uint8)(unsafe.Pointer(ret))[0 : i.Width*i.Height*4]
+}
+
+// ToImage converts a Image to Go image.Image
 func (i *Image) ToImage() image.Image {
 	img := image.NewRGBA(image.Rect(0, 0, int(i.Width), int(i.Height)))
 
