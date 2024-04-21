@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/gen2brain/raylib-go/raylib"
+	"github.com/centretown/raylib-go/raylib"
 )
 
 func main() {

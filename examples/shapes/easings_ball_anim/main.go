@@ -1,8 +1,8 @@
 package main
 
 import (
-	ez "github.com/gen2brain/raylib-go/easings"
-	rl "github.com/gen2brain/raylib-go/raylib"
+	ez "github.com/centretown/raylib-go/easings"
+	rl "github.com/centretown/raylib-go/raylib"
 )
 
 func main() {

@@ -5,7 +5,7 @@ import (
 	"os"
 	"runtime"
 
-	"github.com/gen2brain/raylib-go/raylib"
+	"github.com/centretown/raylib-go/raylib"
 )
 
 const (
