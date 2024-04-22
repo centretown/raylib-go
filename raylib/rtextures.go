@@ -7,7 +7,6 @@ package rl
 import "C"
 
 import (
-	"fmt"
 	"image"
 	"image/color"
 	"unsafe"
@@ -23,18 +22,16 @@ func (i *Image) cptr() *C.Image {
 	return (*C.Image)(unsafe.Pointer(i))
 }
 
-// ToImage converts a Image to an existing go image.Image
-func (i *Image) ToImageEx(img *image.RGBA) {
-	iLen := i.Width * i.Height * 4
-	if len(img.Pix) < int(iLen) {
-		panic(fmt.Sprintf("img.Pix %d need %d", len(img.Pix), iLen))
-	}
-	cimg := i.cptr()
-	ret := C.LoadImageColors(*cimg)
-	img.Pix = (*[1 << 24]uint8)(unsafe.Pointer(ret))[0:iLen]
-	// it's copied to Pix so get rid of it.
-	C.UnloadImageColors(ret)
-}
+// // ToImage converts a Image to an existing go image.Image
+// func (i *Image) ToImageX(img *ImageX) {
+// 	iLen := i.Width * i.Height * 4
+// 	if len(img.Image.Pix) < int(iLen) {
+// 		panic(fmt.Sprintf("img.Pix %d need %d", len(img.Image.Pix), iLen))
+// 	}
+// 	cimg := i.cptr()
+// 	ret := C.LoadImageColors(*cimg)
+// 	img.Image.Pix = (*[1 << 24]uint8)(unsafe.Pointer(ret))[0:iLen]
+// }
 
 // ToImage converts a Image to Go image.Image
 func (i *Image) ToImage() image.Image {
@@ -501,7 +498,7 @@ func ImageColorReplace(image *Image, col, replace color.RGBA) {
 }
 
 // GetImageColor - Get image pixel color at (x, y) position
-func GetImageColor(image Image, x, y int32) color.RGBA {
+func GetImageColor(image *Image, x, y int32) color.RGBA {
 	cimage := image.cptr()
 	cx := (C.int)(x)
 	cy := (C.int)(y)
