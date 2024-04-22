@@ -27,11 +27,13 @@ func (i *Image) cptr() *C.Image {
 func (i *Image) ToImageEx(img *image.RGBA) {
 	iLen := i.Width * i.Height * 4
 	if len(img.Pix) < int(iLen) {
-		panic(fmt.Sprintf("image buffer length %d is less than required %d", len(img.Pix), iLen))
+		panic(fmt.Sprintf("img.Pix %d need %d", len(img.Pix), iLen))
 	}
 	cimg := i.cptr()
 	ret := C.LoadImageColors(*cimg)
 	img.Pix = (*[1 << 24]uint8)(unsafe.Pointer(ret))[0:iLen]
+	// it's copied to Pix so get rid of it.
+	C.UnloadImageColors(ret)
 }
 
 // ToImage converts a Image to Go image.Image
