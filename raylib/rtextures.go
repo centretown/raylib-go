@@ -7,6 +7,7 @@ package rl
 import "C"
 
 import (
+	"fmt"
 	"image"
 	"image/color"
 	"unsafe"
@@ -22,15 +23,15 @@ func (i *Image) cptr() *C.Image {
 	return (*C.Image)(unsafe.Pointer(i))
 }
 
-// ToImage converts a Image to Go image.Image
+// ToImage converts a Image to an existing go image.Image
 func (i *Image) ToImageEx(img *image.RGBA) {
-	// img := image.NewRGBA(image.Rect(0, 0, int(i.Width), int(i.Height)))
-	// Get pixel data from image (RGBA 32bit)
-
-	// i.Width*i.Height*4
+	iLen := i.Width * i.Height * 4
+	if len(img.Pix) < int(iLen) {
+		panic(fmt.Sprintf("image buffer length %d is less than required %d", len(img.Pix), iLen))
+	}
 	cimg := i.cptr()
 	ret := C.LoadImageColors(*cimg)
-	img.Pix = (*[1 << 24]uint8)(unsafe.Pointer(ret))[0:len(img.Pix)]
+	img.Pix = (*[1 << 24]uint8)(unsafe.Pointer(ret))[0:iLen]
 }
 
 // ToImage converts a Image to Go image.Image
